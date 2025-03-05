@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Question</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffebee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #e91e63;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 16px 0;
+            width: 80%;
+            font-size: 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            touch-action: manipulation;
+        }
+        
+        #yesBtn {
+            background-color: #e91e63;
+            color: white;
+        }
+        
+        #yesBtn:hover, #yesBtn:active {
+            background-color: #c2185b;
+            transform: scale(1.05);
+        }
+        
+        #noBtn {
+            background-color: #9e9e9e;
+            color: white;
+            position: relative;
+        }
+        
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: #e91e63;
+            opacity: 0;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .result {
+            margin-top: 30px;
+            font-size: 22px;
+            color: #e91e63;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .gif-container {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+        
+        /* Media queries for better mobile experience */
+        @media (min-width: 768px) {
+            .buttons {
+                flex-direction: row;
+                justify-content: space-around;
+            }
+            
+            button {
+                width: 45%;
+            }
+            
+            h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="heartsContainer"></div>
+    
+    <div class="container">
+        <h1>Will you be my girlfriend?</h1>
+        
+        <div class="buttons">
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
+        
+        <div class="result" id="resultText"></div>
+        
+        <div class="gif-container" id="gifContainer">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDd6ZWl1cWk2bDRvNXJ1NWF1aHRnM2JlOGQybjdqbWF1NWs1aWlmaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0K4kWJir91VEoa1W/giphy.gif" alt="Happy celebration">
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const resultText = document.getElementById('resultText');
+        const gifContainer = document.getElementById('gifContainer');
+        const heartsContainer = document.getElementById('heartsContainer');
+        const container = document.querySelector('.container');
+        
+        // Create floating hearts in the background
+        function createHearts() {
+            const heartCount = window.innerWidth < 768 ? 10 : 20; // Fewer hearts on mobile
+            
+            for (let i = 0; i < heartCount; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '❤️';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                    heart.style.animationDelay = Math.random() * 5 + 's';
+                    heartsContainer.appendChild(heart);
+                    
+                    // Remove heart after animation
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 8000);
+                }, i * 300);
+            }
+        }
+        
+        // Function to move the No button to a random position
+        function moveButton() {
+            const containerRect = container.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+            
+            // Calculate new position within container bounds
+            let newX = Math.random() * (containerRect.width - btnRect.width);
+            let newY = Math.random() * (containerRect.height - btnRect.height);
+            
+            // Ensure button stays within container
+            newX = Math.max(0, Math.min(newX, containerRect.width - btnRect.width));
+            newY = Math.max(0, Math.min(newY, containerRect.height - btnRect.height));
+            
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = newX + 'px';
+            noBtn.style.top = newY + 'px';
+        }
+        
+        // Make the No button run away from cursor (mouse events)
+        noBtn.addEventListener('mouseover', moveButton);
+        
+        // Touch events for mobile devices
+        noBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault(); // Prevent default touch behavior
+            moveButton();
+        }, { passive: false });
+        
+        // Handle Yes button click
+        yesBtn.addEventListener('click', () => {
+            resultText.textContent = "I knew you'd say yes! ❤️";
+            resultText.style.display = 'block';
+            gifContainer.style.display = 'block';
+            noBtn.style.display = 'none';
+            yesBtn.style.display = 'none';
+            createHearts();
+            
+            // Create continuous hearts
+            setInterval(createHearts, 5000);
+        });
+        
+        // Handle No button click (just in case they manage to click it)
+        noBtn.addEventListener('click', () => {
+            resultText.textContent = "Thanks for trying, but that button doesn't really work! 😉";
+            resultText.style.display = 'block';
+        });
+        
+        // Add viewport meta tag programmatically to ensure proper scaling
+        if (!document.querySelector('meta[name="viewport"]')) {
+            const meta = document.createElement('meta');
+            meta.name = 'viewport';
+            meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+            document.head.appendChild(meta);
+        }
+    </script>
+</body>
+</html>
+
