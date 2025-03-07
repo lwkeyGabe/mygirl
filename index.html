@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Question</title>
+    <title>A Special Question For You</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -138,7 +138,7 @@
     <div class="hearts" id="heartsContainer"></div>
     
     <div class="container">
-        <h1>Will you be my girlfriend?</h1>
+        <h1>Dioanne Nicole G. Aballa, will you be my girlfriend?</h1>
         
         <div class="buttons">
             <button id="yesBtn">Yes</button>
@@ -148,7 +148,7 @@
         <div class="result" id="resultText"></div>
         
         <div class="gif-container" id="gifContainer">
-            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDd6ZWl1cWk2bDRvNXJ1NWF1aHRnM2JlOGQybjdqbWF1NWs1aWlmaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0K4kWJir91VEoa1W/giphy.gif" alt="Happy celebration">
+            <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMTU4aDNpYnJyZmNyZXA3MnMzN3lhcXI2cWYweXFna25hOXFiNTV0MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/9zYKvuMPyXJZG2rCf9/giphy.gif" alt="Happy celebration">
         </div>
     </div>
 
@@ -162,26 +162,38 @@
         
         // Create floating hearts in the background
         function createHearts() {
-            const heartCount = window.innerWidth < 768 ? 10 : 20; // Fewer hearts on mobile
+            const heartCount = window.innerWidth < 786 ? 20 : 20; // Fewer hearts on mobile
             
-            for (let i = 0; i < heartCount; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.classList.add('heart');
-                    heart.innerHTML = '❤️';
-                    heart.style.left = Math.random() * 100 + 'vw';
-                    heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                    heart.style.animationDelay = Math.random() * 5 + 's';
-                    heartsContainer.appendChild(heart);
-                    
-                    // Remove heart after animation
-                    setTimeout(() => {
-                        heart.remove();
-                    }, 8000);
-                }, i * 300);
-            }
+            for (let i = 0; i < 50; i++) {
+        const heart = document.createElement('div');
+        heart.innerHTML = '❤️';
+        heart.style.position = 'absolute';
+        heart.style.fontSize = `${Math.random() * 20 + 10}px`;
+        heart.style.left = `${Math.random() * 100}%`;
+        heart.style.top = '100%';
+        heart.style.opacity = Math.random();
+        heart.style.animation = `float ${Math.random() * 5 + 5}s linear infinite`;
+        
+        container.appendChild(heart);
+      }
         }
         
+
+        const style = document.createElement('style');
+      style.innerHTML = `
+        @keyframes float {
+          0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(-100vh) rotate(360deg);
+            opacity: 0;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    
         // Function to move the No button to a random position
         function moveButton() {
             const containerRect = container.getBoundingClientRect();
@@ -211,7 +223,7 @@
         
         // Handle Yes button click
         yesBtn.addEventListener('click', () => {
-            resultText.textContent = "I knew you'd say yes! ❤️";
+            resultText.textContent = "YEYYYY I'M OFFICIALLY YOURS NA!!!! /*nabaliw ";
             resultText.style.display = 'block';
             gifContainer.style.display = 'block';
             noBtn.style.display = 'none';
@@ -222,13 +234,13 @@
             setInterval(createHearts, 5000);
         });
         
-        // Handle No button click (just in case they manage to click it)
+       
         noBtn.addEventListener('click', () => {
-            resultText.textContent = "Thanks for trying, but that button doesn't really work! 😉";
+            resultText.textContent = "yes kasi dapat ang sagot";
             resultText.style.display = 'block';
         });
         
-        // Add viewport meta tag programmatically to ensure proper scaling
+       
         if (!document.querySelector('meta[name="viewport"]')) {
             const meta = document.createElement('meta');
             meta.name = 'viewport';
@@ -238,4 +250,6 @@
     </script>
 </body>
 </html>
+
+
 
